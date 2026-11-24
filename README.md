@@ -14,6 +14,9 @@ where $b_i^k$ is the $i$-th binary digit of $k$. This project proves it for ever
 
 Both use only the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
+Registered in Palomar as [PALOMAR-2026-11-24-000019](https://palomar-registry.org/entry.html?id=PALOMAR-2026-11-24-000019)
+(commit `acdab46a`, Lean and Mathlib 4.35.0).
+
 ## The proof
 
 Read `k` as a family of subsets of an `n`-element set: the subset whose elements are the positions of the digits `1` of
