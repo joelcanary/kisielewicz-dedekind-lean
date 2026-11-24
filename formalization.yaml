@@ -1,0 +1,119 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+
+version: "v0.4"
+
+project:
+  name: "Kisielewicz's formula for the Dedekind numbers"
+  description: >-
+    A machine-checked proof of the formula of Kisielewicz (1988) that writes the Dedekind number M(n), the number
+    of monotone Boolean functions of n variables, as a finite sum of products of binary digits. The formula is
+    proved in two forms: as Formal Conjectures states it, with natural-number arithmetic, and as it is usually
+    printed, with integer arithmetic, digits given by the floor function, and the sum over k from 1 to 2^(2^n).
+    The proof reads k as a family of subsets of an n-element set: the subset coded by the binary digits of i belongs
+    to the family when the i-th digit of k is 1. The innermost product is 1 when the subset coded by i is contained
+    in the subset coded by j, and 0 otherwise. Containment forces i <= j, so only pairs i < j matter: the term of k
+    is 1 when the family is an antichain and 0 otherwise, and the sum counts antichains, which are equinumerous with
+    monotone Boolean functions. The formula is an identity and not a practical algorithm: the sum has 2^(2^n) terms,
+    and no new Dedekind number is computed. The mathematics is classical and no mathematical priority is claimed.
+  authors:
+    - "Joel Cruz Cabrera"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Joel Cruz Cabrera"
+
+sources:
+  - title: "A solution of Dedekind's problem on the number of isotone Boolean functions"
+    authors:
+      - "Andrzej Kisielewicz"
+    id: "https://doi.org/10.1515/crll.1988.386.139"
+    type: "paper"
+    location: "J. reine angew. Math. 386 (1988), 139-144."
+    relationship: "independently-proves"
+    author_endorsement: "n/a"
+  - title: "Dedekind number"
+    authors:
+      - "Wikipedia contributors"
+    id: "https://en.wikipedia.org/wiki/Dedekind_number"
+    type: "web discussion"
+    location: >-
+      Section "Summation formula": the form of the formula stated in M_eq_sum_bit, and the ranges of its indices.
+    relationship: "formalizes"
+    author_endorsement: "n/a"
+
+related_formalizations:
+  - id: "https://github.com/google-deepmind/formal-conjectures/blob/86a2f58a4d7a3a0637d15d5b2ce627592b54b956/FormalConjectures/Wikipedia/DedekindNumber.lean"
+    relationship: "builds-on"
+    note: >-
+      Supplies the statement DedekindNumber.M_eq_kisielewiczFormula, marked there as research solved and left
+      without a proof, the definitions it uses, and the proof that monotone Boolean functions and antichains are
+      equinumerous (M_eq_M'), which this project reuses unchanged.
+
+classification:
+  arxiv:
+    - "math.CO"
+  msc2020:
+    - "05A15"
+    - "06A07"
+    - "68V20"
+
+automation:
+  methods:
+    - method: "agent"
+      models:
+        - "Claude Opus 5.5"
+      framework: "Claude Code"
+  notes: >-
+    Claude Code searched Formal Conjectures for statements without a proof, proposed this one, devised the proof,
+    wrote all of the Lean code outside the part copied from Formal Conjectures, drafted these metadata and ran the
+    searches for earlier formalizations. The human author directed the work and is responsible for the submission.
+
+review:
+  status: "unchecked"
+  notes: >-
+    No separate human review of the Lean code has been made before submission. Mechanical checks: a build without
+    warnings, and the axioms of both results are propext, Classical.choice and Quot.sound.
+
+status:
+  scope: >-
+    Both forms of Kisielewicz's formula, for every n. The only sorries are the statement placeholders in
+    Challenge.lean.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+  main_results:
+    - description: "Kisielewicz's formula as stated in Formal Conjectures."
+      declaration: "DedekindNumber.M_eq_kisielewiczFormula"
+      file: "KisielewiczDedekind/Proof.lean"
+      comparator_config: "comparator.json"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+    - description: "Kisielewicz's formula over the integers, with the ranges usually printed."
+      declaration: "DedekindNumber.M_eq_sum_bit"
+      file: "KisielewiczDedekind/Proof.lean"
+      comparator_config: "comparator.json"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+
+fidelity:
+  notes: >-
+    In M_eq_sum_bit the upper limit log2 i of the innermost product is 0 when i = 0, the value of Nat.log2 0; the
+    factor is then 1. The formula was taken from the Wikipedia article; the text of the 1988 paper was not consulted.
+
+alignment:
+  namespaces:
+    - "DedekindNumber"
+  statements:
+    - source: "Formal Conjectures, DedekindNumber.M_eq_kisielewiczFormula"
+      lean: "DedekindNumber.M_eq_kisielewiczFormula"
+      module: "Solution"
+      status: "proved"
+    - source: "Wikipedia, Dedekind number, Summation formula (Kisielewicz 1988)"
+      lean: "DedekindNumber.M_eq_sum_bit"
+      module: "Solution"
+      status: "proved"
+
+acknowledgements: >-
+  Thanks to the authors of Lean 4, Mathlib and Formal Conjectures.
